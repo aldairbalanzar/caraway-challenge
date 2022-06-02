@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import Thumbnails from './Thumbnails'
 
 function ItemDashboard({ currentItem, setIsViewingItem, setCurrentItem }) {
+    const [currentStyles, setCurrentStyles] = useState([])
+
     const {
         images,
         newTitle,
-        itemStyles,
-        id
     } = currentItem
+
+    useEffect(() => {
+        setCurrentStyles([...currentItem.itemStyles])
+    }, [currentItem])
 
   return (
     <div className='item-dashboard'>
@@ -14,15 +19,9 @@ function ItemDashboard({ currentItem, setIsViewingItem, setCurrentItem }) {
         <div className="dashboard-details">
             <h3 className="dashboard-item-name">{newTitle}</h3>
         </div>
-        <div className="styles-container">
-            {itemStyles.map(item => {
-                return <img key={id}
-                className='styles-thumbnail'
-                src={item.images[0].src}
-                onClick={() => {setCurrentItem(item)}}
-                alt={item.newTitle}/>
-            })}
-        </div>
+
+        <Thumbnails currentStyles={currentStyles} setCurrentItem={setCurrentItem} />
+
         <button 
         className='close-btn'
         onClick={() => {setIsViewingItem(false)}}

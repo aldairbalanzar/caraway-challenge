@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './Card';
 import Category from './Category';
 import products from '../data/products';
@@ -26,6 +26,7 @@ export function ChallengeTwo() {
 export function ChallengeThree() {
     const [items, setItems] = useState([])
     const [isFetching, setIsFetching] = useState(false)
+    const [categories, setCategories] = useState({})
     const [isViewingItem, setIsViewingItem] = useState(false)
     const [currentItem, setCurrentItem] = useState({})
 
@@ -61,7 +62,7 @@ export function ChallengeThree() {
       return
   }
       
-    const categories = useMemo(() => {
+    const getCategories = () => {
       let cache = {}
       items.map(item => {
         let stringArr = item.title.split(' - ')
@@ -89,7 +90,7 @@ export function ChallengeThree() {
       })
 
       return cache
-    }, [items])
+    }
 
     const handleCurrentItem = (item) => {
       setCurrentItem(item)
@@ -99,6 +100,10 @@ export function ChallengeThree() {
     useEffect(() => {
         getData()
     }, [])
+
+    useEffect(() => {
+        setCategories(getCategories())
+    }, [items])
 
     return (
       <div className='categories-container'>
